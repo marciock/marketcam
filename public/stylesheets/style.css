@@ -1,0 +1,28 @@
+.page-init{
+    margin-top: 25em;
+    position:relative;
+    left:50%;
+    width: 25em;
+    height: 10em;
+}
+.page-align{
+    margin-top: 2em;
+
+}
+.btn-finish{
+    width: 25em;
+    height: 10em;
+}
+.align-buttons button{
+    margin-left: 3em;
+}
+.align-table {
+    margin-right: 3em;
+}
+
+canvas.drawing, canvas.drawingBuffer {
+    position: absolute;
+    left: 0;
+    top: 0;
+    
+}

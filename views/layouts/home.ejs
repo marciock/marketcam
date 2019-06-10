@@ -1,0 +1,15 @@
+<%- contentFor('body') %>
+
+<div class="row page-init">
+        <button type="button" class="btn btn-outline-success" id="iniciar">Iniciar Compra</button>
+</div>
+
+
+   
+<script>
+    const iniciar=document.getElementById('iniciar');
+
+    iniciar.addEventListener('click',()=>{
+        document.location.href='/sales';
+    })
+</script>

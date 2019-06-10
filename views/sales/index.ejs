@@ -1,0 +1,150 @@
+<%- contentFor('body') %>
+
+<script type="text/javascript" src="javascripts/quagga.min.js"></script>
+
+<div class="row">
+    <div class="col" id="heads">
+      <div class="col">
+          <div id="scanner"></div>
+          
+      </div>
+      <div class="col">
+        <div class="align-buttons">
+             <button type="button" class="btn btn-danger btn-raised btn-lg " id="pagar"> <i class="material-icons">cancel</i><span>Cancelar</span></button>
+             <button type="button" class="btn btn-success btn-raised btn-lg " id="pagar"> <i class="material-icons">shopping_cart</i><span>Finalizar Compra</span></button>
+        </div>
+          
+        
+      </div>
+      
+    </div>
+    <div class="col">
+      <div class="row align-table">
+            <table class="table">
+                    <thead class="thead-dark">
+                      <tr>
+                        <th scope="col"><button type="button" class="btn btn-warning bmd-btn-icon ">
+                          <i class="material-icons">delete_sweep</i>
+                        </button></th>
+                        <th scope="col">Produto</th>
+                        <th scope="col">Data</th>
+                        <th scope="col">Hora</th>
+                        <th scope="col">Valor</th>
+                      
+
+                      </tr>
+                    </thead>
+                    <tbody>
+
+                      <tr>
+                        <th scope="row"></th>
+                        <td>Mark</td>
+                        <td>Otto</td>
+                        <td>@mdo</td>
+                      </tr>
+                    
+                    </tbody>
+                  </table>
+      </div>
+        <div class="row float-right align-table">
+            <div class="col">
+                <span class="col">Total</span>
+                <span class="col" id="total">0</span>
+            </div>
+            
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+
+  Quagga.init({
+    inputStream : {
+      name : "Live",
+      type : "LiveStream",
+      target: document.querySelector('#scanner') ,   // Or '#yourElement' (optional)
+      
+    },
+    decoder : {
+      readers : ["code_128_reader",
+                        "ean_reader",
+                        "ean_8_reader",
+                        "code_39_reader",
+                        "code_39_vin_reader",
+                        "codabar_reader",
+                        "upc_reader",
+                        "upc_e_reader",
+                        "i2of5_reader"]
+    },
+      debug: {
+        showCanvas: true,
+        showPatches: true,
+        showFoundPatches: true,
+        showSkeleton: true,
+        showLabels: true,
+        showPatchLabels: true,
+        showRemainingPatchLabels: true,
+        boxFromPatches: {
+            showTransformed: true,
+            showTransformedBox: true,
+            showBB: true
+        }
+      },
+    
+  }, function(err) {
+      if (err) {
+          console.log(err);
+          return
+      }
+      console.log("Initialization finished. Ready to start");
+      Quagga.start();
+      
+
+     /* Quagga.onDetected((data)=>{
+        console.log(data.codeResult);
+        alert(data.codeResult.code);
+
+
+      })*/
+  });
+  Quagga.onProcessed(function (result) {
+                var drawingCtx = Quagga.canvas.ctx.overlay,
+                drawingCanvas = Quagga.canvas.dom.overlay;
+
+                if (result) {
+                    if (result.boxes) {
+                        drawingCtx.clearRect(0, 0, parseInt(drawingCanvas.getAttribute("width")), parseInt(drawingCanvas.getAttribute("height")));
+                        result.boxes.filter(function (box) {
+                            return box !== result.box;
+                        }).forEach(function (box) {
+                            Quagga.ImageDebug.drawPath(box, { x: 0, y: 1 }, drawingCtx, { color: "green", lineWidth: 2 });
+                        });
+                    }
+
+                    if (result.box) {
+                        Quagga.ImageDebug.drawPath(result.box, { x: 0, y: 1 }, drawingCtx, { color: "#00F", lineWidth: 2 });
+                    }
+
+                    if (result.codeResult && result.codeResult.code) {
+                        Quagga.ImageDebug.drawPath(result.line, { x: 'x', y: 'y' }, drawingCtx, { color: 'red', lineWidth: 3 });
+                    }
+                }
+            });
+
+
+            Quagga.onDetected(function (result) {
+                console.log("Barcode detected and processed : [" + result.codeResult.code + "]", result);
+                _scannerIsRunning = true;
+                alert(result.codeResult.code)
+            });
+        
+      
+  
+
+  
+
+</script>
